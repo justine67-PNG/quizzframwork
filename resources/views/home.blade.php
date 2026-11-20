@@ -11,10 +11,10 @@
         <h1>HELLO, WELCOME!</h1>
 
         <p>
-            Selamat datang di website pribadi saya.
-            Di sini kamu bisa mengenal saya lebih jauh,
-            mulai dari informasi diri hingga berbagai hobi
-            dan aktivitas yang saya sukai.
+            Welcome to my personal website.
+        Here you can get to know me better,
+        from personal information to various hobbies
+        and activities I enjoy.
         </p>
 
         <a href="/data-diri" class="hero-button">

@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Data Diri - My Portfolio')
@@ -8,7 +7,7 @@
 <h1 class="page-title">About Me</h1>
 
 <p class="page-description">
-    Kenali saya lebih dekat melalui informasi berikut.
+    Get to know me better through the following information.
 </p>
 
 <div class="profile-wrapper">

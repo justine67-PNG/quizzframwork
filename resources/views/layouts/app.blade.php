@@ -42,65 +42,152 @@ main {
     padding: 65px 55px;
 }
 
-/* =========================================
-   HEADER
-========================================= */
 
-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
+/* =========================
+   HEADER JSTN
+========================= */
+
+.main-header {
     width: 100%;
-    padding: 20px 6%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #0a0a0a;
-    border-bottom: 1px solid #292929;
+    height: 82px;
+    background: #101010;
+    position: relative;
+    z-index: 1000;
 }
 
+.header-container {
+    width: 96%;
+    height: 100%;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 45px;
+}
+
+/* LOGO */
+
 .brand-logo {
-    color: #ffffff;
-    font-size: 32px;
-    font-weight: 950;
-    letter-spacing: -2px;
-    transition: 0.3s;
+    color: white;
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    flex-shrink: 0;
 }
 
 .brand-logo span {
-    color: #e83b46;
+    color: #e63946;
 }
 
-.brand-logo:hover {
-    color: #e83b46;
-}
+/* NAVIGATION */
 
-nav {
+.nav-menu {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 40px;
 }
 
-nav a {
-    position: relative;
-    color: #b9b9b9;
+.nav-menu a {
+    color: white;
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 700;
-    padding: 12px 20px;
-    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
     transition: 0.3s;
 }
 
-nav a:hover {
-    color: white;
-    background: #242424;
+.nav-menu a:hover,
+.nav-menu a.active {
+    color: #e63946;
 }
 
-nav a.active {
-    color: white;
-    background: #e83b46;
+/* SEARCH */
+
+.search-box {
+    margin-left: auto;
+    width: 190px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    border: 1px solid white;
+    border-radius: 30px;
+    padding: 0 12px;
 }
+
+.search-box input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+
+    color: white;
+    font-size: 12px;
+}
+
+.search-box input::placeholder {
+    color: white;
+}
+
+.search-box button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* LOGIN BUTTON */
+
+.login-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 10px 18px;
+    background: #e63946;
+    color: white;
+
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 800;
+
+    border-radius: 30px;
+    transition: 0.3s ease;
+    white-space: nowrap;
+}
+
+.login-btn:hover {
+    background: white;
+    color: #e63946;
+    transform: translateY(-2px);
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 650px) {
+    .header-container {
+        gap: 18px;
+    }
+
+    .nav-menu {
+        gap: 15px;
+    }
+
+    .nav-menu a {
+        font-size: 10px;
+    }
+
+    .search-box {
+        width: 120px;
+    }
+}
+
 
 /* =========================================
    HOME / HERO
@@ -285,116 +372,136 @@ nav a.active {
 }
 
 
+
 /* =========================================
-   FIX UKURAN FOTO HOBI + BACKGROUND BLUR
+   HOBBY SECTION
 ========================================= */
 
-/* Ukuran card */
 .hobby-container {
-    display: grid !important;
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 25px;
+    max-width: 900px;
 }
 
-/* Pembungkus foto */
-.hobby-image-wrapper {
-    position: relative;
+.hobby-card {
     width: 100%;
-    height: 280px !important;
+    max-width: 430px;
     overflow: hidden;
-    border-radius: 12px;
-    background: #202020;
-    isolation: isolate;
+    background: #1b1b1b;
+    border: 1px solid #333;
+    border-radius: 8px;
 }
 
-/* Background foto yang blur */
-.hobby-image-wrapper::before {
+/* SLIDER */
+
+.hobby-slider {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+    background: #222;
+}
+
+.hobby-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s ease-in-out;
+}
+
+.hobby-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* BACKGROUND BLUR */
+
+.hobby-slide::before {
     content: "";
     position: absolute;
-    inset: -20px;
+    inset: -15px;
     background-image: var(--hobby-bg);
     background-size: cover;
     background-position: center;
-    filter: blur(15px);
+    filter: blur(15px) brightness(0.65);
     transform: scale(1.1);
-    z-index: -1;
 }
 
-/* Foto utama */
-.hobby-image-wrapper img {
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
-    max-width: 100%;
-    object-fit: contain !important;
-    object-position: center;
-    border-radius: 0;
-    background: transparent;
-    transition: transform 0.4s ease;
+/* FOTO UTAMA */
+
+.hobby-slide img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 12px;
 }
 
-/* Efek hover */
-.hobby-card:hover .hobby-image-wrapper img {
-    transform: scale(1.03);
+/* JUDUL HOBI */
+
+.hobby-card h3 {
+    padding: 15px 18px;
+    color: white;
+    font-size: 18px;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* Tampilan HP */
+/* SLIDER DOTS */
+
+.slider-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    z-index: 2;
+}
+
+.slider-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.slider-dot.active {
+    width: 22px;
+    border-radius: 10px;
+    background: white;
+}
+
+/* RESPONSIVE */
+
 @media (max-width: 700px) {
     .hobby-container {
         grid-template-columns: 1fr;
     }
 
-    .hobby-image-wrapper {
-        height: 240px !important;
+    .hobby-card {
+        max-width: 100%;
+    }
+
+    .hobby-slider {
+        height: 220px;
     }
 }
 
-
-/* FOTO DAN BACKGROUND BLUR */
-
-.hobby-image-wrapper {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
-    border-radius: 3px;
-    background: #252525;
-    isolation: isolate;
-}
-
-.hobby-image-wrapper::before {
-    content: "";
-    position: absolute;
-    inset: -20px;
-    background-image: var(--hobby-bg);
-    background-size: cover;
-    background-position: center;
-    filter: blur(18px) brightness(0.65);
-    transform: scale(1.1);
-    z-index: -1;
-}
-
-.hobby-image-wrapper img {
-    display: block;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transition: transform 0.5s ease;
-}
-
-.hobby-card:hover .hobby-image-wrapper img {
-    transform: scale(1.04);
-}
-
-.hobby-card h3 {
-    padding: 20px 10px 12px;
-    color: white;
-    font-size: 21px;
-    font-weight: 850;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
 
 /* =========================================
    FOOTER
@@ -502,10 +609,104 @@ footer p {
     .hobby-image-wrapper {
         height: 240px;
     }
+
+
+/* ===========================
+   HOBBY IMAGE SLIDER
+=========================== */
+
+.hobby-slider {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 12px;
+    background: #222;
+}
+
+.hobby-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s ease-in-out;
+}
+
+.hobby-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #222;
+}
+
+/* BACKGROUND BLUR */
+
+.hobby-slide::before {
+    content: "";
+    position: absolute;
+    inset: -15px;
+    background-image: var(--hobby-bg);
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px) brightness(0.65);
+    transform: scale(1.1);
+}
+
+/* FOTO UTAMA */
+
+.hobby-slide img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 10px;
+}
+
+/* SLIDER DOTS */
+
+.slider-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    z-index: 2;
+}
+
+.slider-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.slider-dot.active {
+    width: 22px;
+    border-radius: 10px;
+    background: white;
+}
+
+/* RESPONSIVE SLIDER */
+
+@media (max-width: 700px) {
+    .hobby-slider {
+        height: 240px;
+    }
 }
 
 </style>
-
 
 
 <body>
