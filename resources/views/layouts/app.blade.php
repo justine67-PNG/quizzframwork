@@ -14,6 +14,345 @@
    JSTN - RIOT INSPIRED PORTFOLIO
 ========================================= */
 
+
+/* =========================================
+   JSTN FOOTER - RIOT INSPIRED
+========================================= */
+
+
+.site-footer {
+    width: 100%;
+    margin: 0 !important;
+    padding: 55px 0 30px;
+    background: #0b0b0b !important;
+    border: none !important;
+    box-sizing: border-box;
+}
+
+
+.footer-container {
+    width: 88%;
+    max-width: 1450px;
+    margin: auto;
+}
+
+
+/* FOOTER TOP */
+
+.footer-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 35px;
+    padding-bottom: 40px;
+}
+
+/* LOGO */
+
+.footer-logo {
+    color: white;
+    text-decoration: none;
+    font-size: 35px;
+    font-weight: 950;
+    letter-spacing: -2px;
+    flex-shrink: 0;
+}
+
+.footer-logo span {
+    color: #e63946;
+}
+
+/* LINKS */
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px 28px;
+    flex: 1;
+    padding-top: 10px;
+}
+
+.footer-links a {
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    color: #e63946;
+}
+
+/* SOCIAL MEDIA */
+
+.footer-social {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-top: 7px;
+}
+
+.footer-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    color: white;
+    transition: 0.3s ease;
+}
+
+.footer-social svg {
+    width: 21px;
+    height: 21px;
+}
+
+.footer-social a:hover {
+    color: #e63946;
+    transform: translateY(-4px);
+}
+
+/* DIVIDER */
+
+.footer-divider {
+    width: 100%;
+    height: 1px;
+    background: #383838;
+    margin-bottom: 25px;
+}
+
+
+/* FOOTER BOTTOM */
+
+.footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.footer-copyright {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.footer-copyright span {
+    color: #cccccc;
+    font-size: 12px;
+}
+
+.back-to-top {
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.back-to-top:hover {
+    color: #e63946;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 800px) {
+
+    .footer-top {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .footer-links {
+        gap: 18px;
+    }
+
+    .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
+
+@media (max-width: 500px) {
+
+    .footer-container {
+        width: 90%;
+    }
+
+    .footer-links {
+        gap: 15px;
+    }
+
+    .footer-links a {
+        font-size: 10px;
+    }
+
+}
+
+
+/* =========================================
+   MY JOURNEY SECTION
+========================================= */
+
+.journey-section {
+    margin-top: 90px;
+    width: 100%;
+    max-width: 900px;
+}
+
+.journey-heading {
+    margin-bottom: 45px;
+}
+
+.journey-heading h2 {
+    color: white;
+    font-size: clamp(38px, 6vw, 64px);
+    font-weight: 950;
+    letter-spacing: -3px;
+    text-transform: uppercase;
+}
+
+.journey-line {
+    width: 75px;
+    height: 5px;
+    background: #e63946;
+    margin-top: 15px;
+}
+
+.journey-heading p {
+    color: #999;
+    margin-top: 15px;
+    font-size: 15px;
+}
+
+/* TIMELINE */
+
+.journey-container {
+    position: relative;
+    padding-left: 35px;
+}
+
+.journey-container::before {
+    content: "";
+    position: absolute;
+    left: 9px;
+    top: 5px;
+    bottom: 10px;
+    width: 2px;
+    background: #444;
+}
+
+.journey-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.journey-dot {
+    position: absolute;
+    left: -33px;
+    top: 25px;
+    width: 17px;
+    height: 17px;
+    background: #e63946;
+    border: 4px solid #111;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+/* EXPERIENCE CARD */
+
+.journey-card {
+    padding: 27px 30px;
+    background: #1b1b1b;
+    border: 1px solid #333;
+    border-radius: 7px;
+    transition: 0.3s ease;
+}
+
+.journey-card:hover {
+    transform: translateX(7px);
+    border-color: #e63946;
+    background: #202020;
+}
+
+.journey-category {
+    display: inline-block;
+    color: #e63946;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.journey-card h3 {
+    color: white;
+    font-size: 23px;
+    font-weight: 850;
+    margin-bottom: 14px;
+}
+
+.journey-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: #ccc;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.journey-badge {
+    padding: 4px 10px;
+    background: #303030;
+    color: #ddd;
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+.journey-card p {
+    color: #999;
+    font-size: 14px;
+    margin-top: 15px;
+    line-height: 1.7;
+}
+
+.journey-period {
+    color: #e63946;
+    font-size: 12px;
+    font-weight: 800;
+    margin-top: 18px;
+    letter-spacing: 0.5px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 650px) {
+    .journey-section {
+        margin-top: 60px;
+    }
+
+    .journey-container {
+        padding-left: 28px;
+    }
+
+    .journey-dot {
+        left: -26px;
+    }
+
+    .journey-card {
+        padding: 22px 18px;
+    }
+
+    .journey-card h3 {
+        font-size: 19px;
+    }
+}
+
+
+
 /* GLOBAL */
 
 * {
@@ -103,19 +442,51 @@ main {
     color: #e63946;
 }
 
+/* GROUP KANAN HEADER */
+
+.header-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* GLOBE */
+
+.globe-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.globe-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
+
 /* SEARCH */
 
 .search-box {
-    margin-left: auto;
     width: 190px;
-    height: 38px;
-
+    height: 46px;
     display: flex;
     align-items: center;
-
-    border: 1px solid white;
+    gap: 8px;
+    padding: 0 16px 0 20px;
+    border: 1px solid rgba(255,255,255,0.85);
     border-radius: 30px;
-    padding: 0 12px;
+    transition: 0.3s;
+}
+
+.search-box:focus-within {
+    border-color: #e63946;
 }
 
 .search-box input {
@@ -123,39 +494,41 @@ main {
     background: transparent;
     border: none;
     outline: none;
-
     color: white;
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .search-box input::placeholder {
     color: white;
+    opacity: 1;
 }
 
 .search-box button {
+    display: flex;
+    align-items: center;
     background: transparent;
     border: none;
     color: white;
-    font-size: 22px;
     cursor: pointer;
 }
 
-/* LOGIN BUTTON */
+/* SIGN IN */
 
 .login-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-
-    padding: 10px 18px;
-    background: #e63946;
+    height: 46px;
+    padding: 0 30px;
+    background: #d13639;
     color: white;
-
     text-decoration: none;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
-
+    letter-spacing: 0.5px;
     border-radius: 30px;
     transition: 0.3s ease;
     white-space: nowrap;
@@ -163,7 +536,7 @@ main {
 
 .login-btn:hover {
     background: white;
-    color: #e63946;
+    color: #d13639;
     transform: translateY(-2px);
 }
 
@@ -184,7 +557,18 @@ main {
     }
 
     .search-box {
-        width: 120px;
+        width: 130px;
+        height: 40px;
+    }
+
+    .login-btn {
+        height: 40px;
+        padding: 0 18px;
+        font-size: 12px;
+    }
+
+    .globe-btn {
+        display: none;
     }
 }
 
@@ -324,11 +708,15 @@ main {
 
 .profile-wrapper {
     width: 100%;
-    max-width: 900px;
+    max-width: 1300px;
+    display: flex;
+    align-items: flex-start;
+    gap: 48px;
 }
 
 .profile-card {
-    width: 100%;
+    flex: 1;
+    max-width: 900px;
     padding: 30px 35px;
     background: #1b1b1b;
     border: 1px solid #333333;
@@ -371,7 +759,185 @@ main {
     text-align: right;
 }
 
+.profile-photo {
+    position: relative;
+    flex-shrink: 0;
+    width: 320px;
+    height: 400px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #333333;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+}
 
+.profile-photo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 75%;
+    opacity: 0;
+    animation: photoFade 20s infinite;          /* 5s x 4 foto */
+    animation-delay: calc(5s * var(--i));       /* jeda tiap foto */
+}
+
+@keyframes photoFade {
+    0%     { opacity: 0; }
+    5%     { opacity: 1; }   /* fade in */
+    25%    { opacity: 1; }   /* tetap tampil */
+    30%    { opacity: 0; }   /* fade out */
+    100%   { opacity: 0; }
+}
+
+/* =========================================
+   EDUCATION SECTION
+========================================= */
+
+.education-section {
+    margin-top: 70px;
+    width: 100%;
+    max-width: 900px;
+}
+
+.education-heading {
+    margin-bottom: 35px;
+}
+
+.education-heading h2 {
+    color: white;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 950;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+}
+
+.education-line {
+    width: 75px;
+    height: 5px;
+    background: #e63946;
+    margin-top: 12px;
+}
+
+.education-heading p {
+    color: #999;
+    margin-top: 12px;
+    font-size: 15px;
+}
+
+.education-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.education-card {
+    overflow: hidden;
+    background: #1b1b1b;
+    border: 1px solid #333;
+    border-radius: 10px;
+    transition: 0.3s ease;
+}
+
+.education-card:hover {
+    transform: translateY(-6px);
+    border-color: #e63946;
+}
+
+/* FOTO SEKOLAH */
+
+.education-photo {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.education-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.education-card:hover .education-photo img {
+    transform: scale(1.06);
+}
+
+.education-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.65) 100%);
+    pointer-events: none;
+}
+
+.education-level {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    padding: 6px 14px;
+    background: #e63946;
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    border-radius: 30px;
+}
+
+/* ISI KARTU */
+
+.education-body {
+    padding: 22px 24px 26px;
+}
+
+.education-body h3 {
+    color: white;
+    font-size: 20px;
+    font-weight: 850;
+    line-height: 1.3;
+    margin-bottom: 6px;
+}
+
+.education-major {
+    color: #bbb;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.education-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.education-period {
+    color: #e63946;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.education-badge {
+    padding: 4px 10px;
+    background: #303030;
+    color: #ddd;
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+@media (max-width: 700px) {
+    .education-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .education-photo {
+        height: 200px;
+    }
+}
 
 /* =========================================
    HOBBY SECTION
@@ -379,28 +945,51 @@ main {
 
 .hobby-container {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, 310px);
+    justify-content: center;
     gap: 25px;
-    max-width: 900px;
+    margin: 40px auto;
+    width: 100%;
 }
 
 .hobby-card {
+    position: relative;
     width: 100%;
-    max-width: 430px;
+    height: 460px;
     overflow: hidden;
-    background: #1b1b1b;
-    border: 1px solid #333;
-    border-radius: 8px;
+    border-radius: 12px;
+    isolation: isolate;
+    background: #111;
+    transition: transform 0.4s ease;
+}
+
+.hobby-card:hover {
+    transform: translateY(-7px);
+}
+
+/* DARK GRADIENT OVERLAY */
+
+.hobby-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0) 35%,
+        rgba(0,0,0,0.70) 68%,
+        rgba(0,0,0,0.95) 100%
+    );
 }
 
 /* SLIDER */
 
 .hobby-slider {
-    width: 100%;
-    height: 220px;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
     overflow: hidden;
-    position: relative;
-    background: #222;
 }
 
 .hobby-track {
@@ -414,59 +1003,100 @@ main {
     flex: 0 0 100%;
     width: 100%;
     height: 100%;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* BACKGROUND BLUR */
-
-.hobby-slide::before {
-    content: "";
-    position: absolute;
-    inset: -15px;
-    background-image: var(--hobby-bg);
-    background-size: cover;
-    background-position: center;
-    filter: blur(15px) brightness(0.65);
-    transform: scale(1.1);
 }
 
 /* FOTO UTAMA */
 
 .hobby-slide img {
-    position: relative;
-    z-index: 1;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    padding: 12px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.6s ease;
 }
 
 /* JUDUL HOBI */
 
-.hobby-card h3 {
-    padding: 15px 18px;
-    color: white;
-    font-size: 18px;
-    font-weight: 850;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.hobby-card:hover .hobby-slide img {
+    transform: scale(1.05);
 }
+
+
+/* TEKS DI ATAS FOTO */
+
+.hobby-content {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 50px;
+    z-index: 3;
+    text-align: center;
+    color: white;
+}
+
+.hobby-content .hobby-subtitle {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: #ffb6a0;
+    margin-bottom: 8px;
+}
+
+.hobby-content h3 {
+    color: white;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+}
+
+.hobby-description {
+    color: rgba(255,255,255,0.9);
+    font-size: 13px;
+    line-height: 1.5;
+    font-weight: 500;
+    margin-bottom: 18px;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+}
+
+.hobby-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 30px;
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 40px;
+    background: transparent;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    transition: 0.3s ease;
+}
+
+.hobby-card:hover .hobby-cta {
+    background: white;
+    border-color: white;
+    color: #111;
+}
+
+.hobby-arrow { font-size: 16px; }
 
 /* SLIDER DOTS */
 
 .slider-dots {
     position: absolute;
-    bottom: 10px;
+    bottom: 16px;
     left: 0;
-    width: 100%;
+    right: 0;
     display: flex;
     justify-content: center;
     gap: 7px;
-    z-index: 2;
+    z-index: 3;
 }
 
 .slider-dot {
@@ -490,16 +1120,18 @@ main {
 
 @media (max-width: 700px) {
     .hobby-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 310px));
     }
 
     .hobby-card {
+        height: 440px;
         max-width: 100%;
     }
+}
 
-    .hobby-slider {
-        height: 220px;
-    }
+@media (max-width: 480px) {
+    .hobby-content h3 { font-size: 20px; }
+    .hobby-cta { padding: 12px 20px; font-size: 12px; }
 }
 
 
@@ -602,109 +1234,44 @@ footer p {
         text-align: left;
     }
 
-    .hobby-container {
-        grid-template-columns: 1fr;
+        .profile-card {
+        padding: 18px;
     }
 
-    .hobby-image-wrapper {
-        height: 240px;
+    .profile-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
     }
 
-
-/* ===========================
-   HOBBY IMAGE SLIDER
-=========================== */
-
-.hobby-slider {
-    width: 100%;
-    height: 280px;
-    overflow: hidden;
-    position: relative;
-    border-radius: 12px;
-    background: #222;
-}
-
-.hobby-track {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.6s ease-in-out;
-}
-
-.hobby-slide {
-    flex: 0 0 100%;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #222;
-}
-
-/* BACKGROUND BLUR */
-
-.hobby-slide::before {
-    content: "";
-    position: absolute;
-    inset: -15px;
-    background-image: var(--hobby-bg);
-    background-size: cover;
-    background-position: center;
-    filter: blur(15px) brightness(0.65);
-    transform: scale(1.1);
-}
-
-/* FOTO UTAMA */
-
-.hobby-slide img {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 10px;
-}
-
-/* SLIDER DOTS */
-
-.slider-dots {
-    position: absolute;
-    bottom: 12px;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 7px;
-    z-index: 2;
-}
-
-.slider-dot {
-    width: 8px;
-    height: 8px;
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.5);
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.slider-dot.active {
-    width: 22px;
-    border-radius: 10px;
-    background: white;
-}
-
-/* RESPONSIVE SLIDER */
-
-@media (max-width: 700px) {
-    .hobby-slider {
-        height: 240px;
+    .profile-value {
+        text-align: left;
     }
+
+    /* ===== TAMBAHAN FOTO PROFIL ===== */
+    .profile-wrapper {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+    .profile-card {
+        width: 100%;
+    }
+
+    .profile-photo img {
+        width: 100%;
+        max-width: 320px;
+        height: auto;
+        aspect-ratio: 4 / 5;
+    }
+
 }
+
+
+</style>
+
+
+
 
 </style>
 
