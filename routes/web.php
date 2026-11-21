@@ -37,8 +37,25 @@ Route::get('/hobi', function () {
                 'images/traveling.jpg',
             ],
         ],
+        [
+            'nama' => 'Listening Music',
+            'fotos' => [
+                'images/music.jpg',
+            ],
+        ],
     ];
 
     return view('hobbies', compact('hobbies'));
 });
 
+Route::get('/hobi/gaming', function () {
+    return view('games');
+});
+
+Route::get('/hobi/traveling', function () {
+    return view('travel');
+});
+
+Route::get('/hobi/music', function () {
+    return view('music');
+});

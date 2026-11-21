@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-</head>
-
 
 <style>
-
 
 /* =========================================
    JSTN - RIOT INSPIRED PORTFOLIO
@@ -19,7 +16,6 @@
    JSTN FOOTER - RIOT INSPIRED
 ========================================= */
 
-
 .site-footer {
     width: 100%;
     margin: 0 !important;
@@ -29,13 +25,11 @@
     box-sizing: border-box;
 }
 
-
 .footer-container {
     width: 88%;
     max-width: 1450px;
     margin: auto;
 }
-
 
 /* FOOTER TOP */
 
@@ -121,7 +115,6 @@
     background: #383838;
     margin-bottom: 25px;
 }
-
 
 /* FOOTER BOTTOM */
 
@@ -352,7 +345,6 @@
 }
 
 
-
 /* GLOBAL */
 
 * {
@@ -389,9 +381,13 @@ main {
 .main-header {
     width: 100%;
     height: 82px;
-    background: #101010;
-    position: relative;
+    position: sticky;                     /* header menempel di atas saat scroll */
+    top: 0;
     z-index: 1000;
+    background: rgba(16, 16, 16, 0.55);   /* semi transparan */
+    -webkit-backdrop-filter: blur(14px);  /* Safari */
+    backdrop-filter: blur(14px);          /* konten di belakang header jadi blur */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .header-container {
@@ -540,7 +536,6 @@ main {
     transform: translateY(-2px);
 }
 
-
 /* RESPONSIVE */
 
 @media (max-width: 650px) {
@@ -670,6 +665,7 @@ main {
     transform: translateY(-4px);
 }
 
+
 /* =========================================
    PAGE TITLES
 ========================================= */
@@ -701,6 +697,7 @@ main {
     margin-top: 10px;
     margin-bottom: 40px;
 }
+
 
 /* =========================================
    DATA DIRI
@@ -759,6 +756,8 @@ main {
     text-align: right;
 }
 
+/* FOTO PROFIL (SLIDESHOW 4 FOTO) */
+
 .profile-photo {
     position: relative;
     flex-shrink: 0;
@@ -789,6 +788,7 @@ main {
     30%    { opacity: 0; }   /* fade out */
     100%   { opacity: 0; }
 }
+
 
 /* =========================================
    EDUCATION SECTION
@@ -939,6 +939,7 @@ main {
     }
 }
 
+
 /* =========================================
    HOBBY SECTION
 ========================================= */
@@ -1016,12 +1017,9 @@ main {
     transition: transform 0.6s ease;
 }
 
-/* JUDUL HOBI */
-
 .hobby-card:hover .hobby-slide img {
     transform: scale(1.05);
 }
-
 
 /* TEKS DI ATAS FOTO */
 
@@ -1076,6 +1074,10 @@ main {
     font-size: 14px;
     font-weight: 700;
     transition: 0.3s ease;
+}
+
+a.hobby-cta {
+    text-decoration: none;
 }
 
 .hobby-card:hover .hobby-cta {
@@ -1136,6 +1138,176 @@ main {
 
 
 /* =========================================
+   GAMES PAGE
+========================================= */
+
+.games-section {
+    width: 100%;
+}
+
+.games-back {
+    display: inline-block;
+    margin-bottom: 25px;
+    color: #999;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.games-back:hover { color: #e63946; }
+
+.games-title {
+    color: white;
+    font-size: clamp(38px, 6vw, 64px);
+    font-weight: 800;
+    letter-spacing: -2px;
+}
+
+.games-subtitle {
+    color: #999;
+    margin-top: 8px;
+}
+
+/* BARISAN KARTU (full lebar layar, looping) */
+
+.games-row {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100vw;
+    margin-top: 40px;
+    margin-left: calc(50% - 50vw);   /* keluar dari batas kontainer sampai tepi layar */
+    padding: 60px 0 60px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.games-row::-webkit-scrollbar { display: none; }
+
+/* KARTU JAJAR GENJANG (gambar lurus, hanya bentuknya dipotong) */
+
+.game-card {
+    position: relative;
+    flex: 0 0 280px;
+    height: 520px;
+    overflow: hidden;
+    background: #111;
+    clip-path: polygon(7% 0, 100% 0, 93% 100%, 0 100%);
+    filter: brightness(0.8);
+    transform: scale(1);
+    transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+/* selang-seling naik turun seperti contoh */
+.game-card:nth-child(even) {
+    margin-top: 28px;
+}
+
+/* KARTU DI TENGAH = POINT OF VIEW */
+.game-card.is-center {
+    transform: scale(1.08);
+    filter: brightness(1);
+    z-index: 2;
+}
+
+.game-card:hover {
+    filter: brightness(1);
+}
+
+.game-card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.6s ease;
+}
+
+.game-card:hover img {
+    transform: scale(1.05);
+}
+
+/* gradasi gelap di bawah supaya nama terbaca */
+.game-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.85) 100%);
+    pointer-events: none;
+}
+
+.game-info {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 22px;
+    z-index: 2;
+    padding: 0 22px;
+    text-align: center;
+}
+
+.game-info h3 {
+    color: white;
+    font-size: 20px;
+    font-weight: 800;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+}
+
+.game-info span {
+    color: #e63946;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 700px) {
+    .game-card {
+        flex-basis: 210px;
+        height: 400px;
+    }
+}
+
+/* =========================================
+   MUSIC PAGE
+========================================= */
+
+.music-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 45px;
+    max-width: 1000px;
+}
+
+.music-card {
+    padding: 22px;
+    background: #1b1b1b;
+    border: 1px solid #333;
+    border-radius: 12px;
+    transition: 0.3s ease;
+}
+
+.music-card:hover {
+    border-color: #e63946;
+}
+
+.music-card-title {
+    color: white;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 16px;
+}
+
+.music-card iframe {
+    display: block;
+    border-radius: 12px;
+}
+
+/* =========================================
    FOOTER
 ========================================= */
 
@@ -1154,6 +1326,7 @@ footer p {
     letter-spacing: 1px;
 }
 
+
 /* =========================================
    ANIMATION
 ========================================= */
@@ -1169,6 +1342,7 @@ footer p {
         transform: translateY(0);
     }
 }
+
 
 /* =========================================
    RESPONSIVE
@@ -1220,35 +1394,6 @@ footer p {
         letter-spacing: -2px;
     }
 
-    .profile-card {
-        padding: 18px;
-    }
-
-    .profile-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-
-    .profile-value {
-        text-align: left;
-    }
-
-        .profile-card {
-        padding: 18px;
-    }
-
-    .profile-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-
-    .profile-value {
-        text-align: left;
-    }
-
-    /* ===== TAMBAHAN FOTO PROFIL ===== */
     .profile-wrapper {
         flex-direction: column-reverse;
         align-items: center;
@@ -1256,9 +1401,20 @@ footer p {
 
     .profile-card {
         width: 100%;
+        padding: 18px;
     }
 
-    .profile-photo img {
+    .profile-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .profile-value {
+        text-align: left;
+    }
+
+    .profile-photo {
         width: 100%;
         max-width: 320px;
         height: auto;
@@ -1270,11 +1426,9 @@ footer p {
 
 </style>
 
+<link rel="stylesheet" href="{{ asset('css/theme.css') }}">
 
-
-
-</style>
-
+</head>
 
 <body>
 
@@ -1285,6 +1439,114 @@ footer p {
     </main>
 
     @include('partials.footer')
+
+
+    <audio id="bgm" src="{{ asset('audio/music.mp3') }}" loop preload="auto"></audio>
+
+    <button id="bgm-toggle" type="button" aria-label="Putar atau jeda musik">♪</button>
+
+        <script>
+    (function () {
+        const audio = document.getElementById('bgm');
+        const btn = document.getElementById('bgm-toggle');
+        audio.volume = 0.4;
+
+        const savedTime = parseFloat(sessionStorage.getItem('bgmTime') || '0');
+        let userPaused = sessionStorage.getItem('bgmPaused') === '1';
+
+        audio.addEventListener('loadedmetadata', function () {
+            if (savedTime && savedTime < audio.duration) audio.currentTime = savedTime;
+        });
+
+        function updateButton() {
+            btn.classList.toggle('is-playing', !audio.paused);
+        }
+
+        function tryPlay() {
+            return audio.play().then(updateButton).catch(function () {
+                const events = ['click', 'keydown', 'touchend'];
+                function unlock() {
+                    if (!userPaused) audio.play().then(updateButton).catch(function () {});
+                    events.forEach(function (e) { document.removeEventListener(e, unlock); });
+                }
+                events.forEach(function (e) { document.addEventListener(e, unlock); });
+            });
+        }
+
+        if (!userPaused) tryPlay();
+
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (audio.paused) {
+                userPaused = false;
+                sessionStorage.setItem('bgmPaused', '0');
+                audio.play().then(updateButton);
+            } else {
+                userPaused = true;
+                sessionStorage.setItem('bgmPaused', '1');
+                audio.pause();
+                updateButton();
+            }
+        });
+
+        setInterval(function () {
+            if (!audio.paused) sessionStorage.setItem('bgmTime', audio.currentTime);
+        }, 1000);
+        window.addEventListener('beforeunload', function () {
+            sessionStorage.setItem('bgmTime', audio.currentTime);
+        });
+
+        /* ===== PINDAH HALAMAN TANPA PUTUS MUSIK ===== */
+
+        async function loadPage(url, push) {
+            try {
+                const res = await fetch(url, { headers: { 'X-Requested-With': 'fetch' } });
+                if (!res.ok) throw new Error('bad response');
+                const html = await res.text();
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+
+                const newMain = doc.querySelector('main');
+                const oldMain = document.querySelector('main');
+                if (!newMain || !oldMain) throw new Error('no main');
+
+                if (window.__stopGames) { window.__stopGames(); window.__stopGames = null; }
+
+                oldMain.innerHTML = newMain.innerHTML;
+                document.title = doc.title;
+
+                // jalankan ulang script milik halaman (slider, auto-scroll, dll.)
+                oldMain.querySelectorAll('script').forEach(function (old) {
+                    const s = document.createElement('script');
+                    s.textContent = old.textContent;
+                    old.replaceWith(s);
+                });
+
+                if (push) history.pushState({}, '', url);
+                window.scrollTo(0, 0);
+            } catch (err) {
+                window.location.href = url;   // cadangan: reload biasa
+            }
+        }
+
+        document.addEventListener('click', function (e) {
+            const a = e.target.closest('a');
+            if (!a) return;
+            if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+            if (a.target === '_blank' || a.hasAttribute('download')) return;
+            if (a.origin !== location.origin) return;                 // link luar
+            if (a.protocol === 'mailto:' || a.protocol === 'tel:') return;
+            const href = a.getAttribute('href');
+            if (!href || href.startsWith('#')) return;                // anchor di halaman sama
+
+            e.preventDefault();
+            loadPage(a.href, true);
+        });
+
+        window.addEventListener('popstate', function () {
+            loadPage(location.href, false);   // tombol back/forward
+        });
+    })();
+    </script>
 
 </body>
 </html>

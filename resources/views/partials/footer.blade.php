@@ -1,5 +1,3 @@
-<footer>
-
 <footer class="site-footer">
 
     <div class="footer-container">
@@ -15,7 +13,7 @@
                 <a href="{{ url('/data-diri') }}">ABOUT ME</a>
                 <a href="{{ url('/hobi') }}">MY HOBBIES</a>
                 <a href="{{ url('/data-diri') }}">EXPERIENCE</a>
-                <a href="mailto:EMAIL_KAMU">CONTACT</a>
+                <a href="mailto:putujustine2007@gmail.com">CONTACT</a>
             </div>
 
             <div class="footer-social">

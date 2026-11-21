@@ -14,9 +14,22 @@
 
     @foreach ($hobbies as $hobby)
 
+        @php
+            $nama = strtolower($hobby['nama']);
+            $link = null;
+            if ($nama == 'gaming') {
+                $link = url('/hobi/gaming');
+            } elseif (str_contains($nama, 'travel')) {
+                $link = url('/hobi/traveling');
+            }
+            elseif (str_contains($nama, 'music')) {
+                $link = url('/hobi/music');
+            }
+        @endphp
+
         <div class="hobby-card" data-hobby-card>
 
-            {{-- 1. FOTO (memenuhi kartu) --}}
+            {{-- 1. FOTO --}}
             <div class="hobby-slider" data-slider>
                 <div class="hobby-track">
                     @foreach ($hobby['fotos'] as $foto)
@@ -27,7 +40,7 @@
                 </div>
             </div>
 
-            {{-- 2. GRADIENT GELAP (BARU) --}}
+            {{-- 2. GRADIENT GELAP --}}
             <div class="hobby-overlay"></div>
 
             {{-- 3. TEKS + TOMBOL --}}
@@ -37,17 +50,26 @@
                 <h3>{{ strtoupper($hobby['nama']) }}</h3>
 
                 <p class="hobby-description">
-                    @if (strtolower($hobby['nama']) == 'gaming')
-                        Enjoying games, competition, and unforgettable moments.
-                    @else
-                        Exploring new places and creating beautiful memories.
-                    @endif
-                </p>
+    @if ($nama == 'gaming')
+        Enjoying games, competition, and unforgettable moments.
+    @elseif (str_contains($nama, 'music'))
+        Finding comfort, energy, and inspiration through every melody.
+    @else
+        Exploring new places and creating beautiful memories.
+    @endif
+            </p>
 
-                <span class="hobby-cta">
-                    Explore {{ ucfirst($hobby['nama']) }}
-                    <span class="hobby-arrow">↗</span>
-                </span>
+                @if ($link)
+                    <a href="{{ $link }}" class="hobby-cta">
+                        Explore {{ ucfirst($hobby['nama']) }}
+                        <span class="hobby-arrow">↗</span>
+                    </a>
+                @else
+                    <span class="hobby-cta">
+                        Explore {{ ucfirst($hobby['nama']) }}
+                        <span class="hobby-arrow">↗</span>
+                    </span>
+                @endif
             </div>
 
             {{-- 4. DOTS --}}
