@@ -49,7 +49,14 @@
                 </button>
             </form>
 
-            <a href="{{ url('/login') }}" class="login-btn">SIGN IN</a>
+            @if (session('demo_user'))
+    <form method="POST" action="{{ url('/logout') }}" style="display:inline">
+        @csrf
+        <button type="submit" class="login-btn" style="border:none;cursor:pointer">Sign Out</button>
+    </form>
+@else
+    <a href="{{ url('/login') }}" class="login-btn">Sign In</a>
+@endif
 
         </div>
 

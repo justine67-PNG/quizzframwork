@@ -59,3 +59,31 @@ Route::get('/hobi/traveling', function () {
 Route::get('/hobi/music', function () {
     return view('music');
 });
+
+use Illuminate\Http\Request;
+
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
+
+Route::post('/login', function (Request $request) {
+    $request->validate([
+        'email'    => 'required|email',
+        'password' => 'required',
+    ]);
+
+    // HANYA UNTUK TES: akun contoh
+    if ($request->email === 'test@example.com' && $request->password === 'password') {
+        $request->session()->put('demo_user', 'Test User');
+        return redirect('/');
+    }
+
+    return back()
+        ->withErrors(['email' => 'Email atau password salah.'])
+        ->withInput($request->only('email'));
+});
+
+Route::post('/logout', function (Request $request) {
+    $request->session()->forget('demo_user');
+    return redirect('/');
+});
