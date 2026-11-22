@@ -788,4 +788,67 @@
 })();
 </script>
 
+{{-- ================= PANAH PILIH LOKASI ================= --}}
+<style>
+  .game-arrow {
+    position: absolute;
+    left: 50%;
+    width: 40px;
+    margin-left: -20px;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .game-arrow svg {
+    display: block;
+    width: 100%;
+    shape-rendering: crispEdges;
+    image-rendering: pixelated;
+    animation: arrowBob .8s steps(2) infinite;
+    filter: drop-shadow(3px 3px 0 rgba(0, 0, 0, .35));
+  }
+  @keyframes arrowBob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(8px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .game-arrow svg { animation: none; }
+  }
+  @media (max-width: 700px) {
+    .game-arrow { width: 30px; margin-left: -15px; }
+  }
+</style>
+
+<script>
+(function () {
+  const row = document.querySelector('.games-row');
+  if (!row) return;
+  const section = row.parentElement;
+  section.style.position = 'relative';
+
+  section.querySelectorAll('.game-arrow').forEach(el => el.remove());
+
+  const COLOR = { o: '#ffa41b', k: '#0a1a4a' };
+  let rects = '';
+  for (let y = 0; y <= 4; y++) {
+    for (let x = y; x <= 8 - y; x++) {
+      const ch = (y === 0 || x === y || x === 8 - y) ? 'k' : 'o';
+      rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="${COLOR[ch]}"/>`;
+    }
+  }
+
+  const arrow = document.createElement('div');
+  arrow.className = 'game-arrow';
+  arrow.setAttribute('aria-hidden', 'true');
+  arrow.innerHTML = `<svg viewBox="0 0 9 5" xmlns="http://www.w3.org/2000/svg">${rects}</svg>`;
+  section.appendChild(arrow);
+
+  const ARROW_TOP = 4;
+  function place() { arrow.style.top = (row.offsetTop + ARROW_TOP) + 'px'; }
+  place();
+  addEventListener('load', place);
+  addEventListener('resize', place);
+  if ('ResizeObserver' in window) new ResizeObserver(place).observe(section);
+})();
+</script>
+
 @endsection
