@@ -1428,6 +1428,33 @@ footer p {
 
 <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+
+<style>
+:root{--font-pixel:'Silkscreen','Pixelify Sans','Courier New',monospace}
+
+/* Judul, menu, tombol, dan label memakai font pixel */
+h1,h2,h3,h4,
+.brand-logo,.footer-logo,
+.nav-menu a,.footer-links a,
+.subtitle,.page-title,
+.hero-button,.login-btn,.hobby-cta,.back-to-top,.games-back,
+.education-level,.journey-category,.game-info span,
+.hx-btn,.hx-badge,.hx-theme,.bgm-play,.bgm-pop small{
+    font-family:var(--font-pixel) !important;
+}
+
+/* Judul lama memakai jarak huruf rapat (minus), tidak cocok untuk font pixel */
+h1,h2,.page-title,.brand-logo,.footer-logo{letter-spacing:.02em !important}
+
+/* Font pixel lebih lebar, jadi judul besar diperkecil sedikit */
+.hero h1,.page-title{font-size:clamp(30px,5.5vw,60px) !important;line-height:1.15 !important}
+
+body{font-family:var(--font-pixel) !important}
+</style>
+
 </head>
 
 <body>
@@ -1438,7 +1465,10 @@ footer p {
         @yield('content')
     </main>
 
+        <div id="after-main">@yield('after_content')</div>
+
     @include('partials.footer')
+
 
 
     {{-- <audio id="bgm" preload="auto"></audio>
@@ -1638,6 +1668,10 @@ audio.addEventListener('error', function () {
             { src: "{{ asset('audio/music.mp3') }}",  title: 'Steve Lacy - oh yeah ' },
             { src: "{{ asset('audio/music2.mp3') }}", title: 'Rex Orange County - Hannah Montana' },
             { src: "{{ asset('audio/music3.mp3') }}", title: 'A Sorrowful Reunion - Reality Club' },
+            { src: "{{ asset('audio/music4.mp3') }}", title: 'Thief - Ookay' },
+            { src: "{{ asset('audio/music5.mp3') }}", title: 'Porter Robinson & Madeon - Shelter' },
+            { src: "{{ asset('audio/music6.mp3') }}", title: 'MGMT - Kids' },
+            { src: "{{ asset('audio/music7.mp3') }}", title: 'Ombak Banyu Asmara - The Panturas' },
         ];
 
         let userPaused = sessionStorage.getItem('bgmPaused') === '1';
@@ -1775,10 +1809,14 @@ audio.addEventListener('error', function () {
                 if (window.__stopGames) { window.__stopGames(); window.__stopGames = null; }
 
                 oldMain.innerHTML = newMain.innerHTML;
+                const newAfter = doc.getElementById('after-main');
+                const oldAfter = document.getElementById('after-main');
+                if (newAfter && oldAfter) oldAfter.innerHTML = newAfter.innerHTML;
+
                 document.title = doc.title;
 
                 // jalankan ulang script milik halaman (slider, auto-scroll, dll.)
-                oldMain.querySelectorAll('script').forEach(function (old) {
+                document.querySelectorAll('main script, #after-main script').forEach(function (old) {
                     const s = document.createElement('script');
                     s.textContent = old.textContent;
                     old.replaceWith(s);
@@ -1816,6 +1854,130 @@ audio.addEventListener('error', function () {
 
     @include('partials.pixel-trail')
     @include('partials.theme-fx')
+
+    <div class="egg-layer" id="eggLayer" aria-hidden="true"></div>
+
+<style>
+  .egg-layer {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;   /* tidak bisa diinteraksi */
+    z-index: -1;            /* di belakang konten, di atas warna background */
+    will-change: transform;
+  }
+  .egg {
+    position: absolute;
+    image-rendering: pixelated;
+    opacity: 0;
+    animation: eggFloat var(--dur, 10s) ease-in-out forwards;
+  }
+  .egg svg { display: block; width: 100%; height: 100%; shape-rendering: crispEdges; }
+
+  @keyframes eggFloat {
+    0%   { opacity: 0;   transform: translate(0, 0) rotate(0deg); }
+    15%  { opacity: .55; }
+    50%  { transform: translate(var(--dx, 40px), var(--dy, -60px)) rotate(var(--rot, 6deg)); }
+    85%  { opacity: .55; }
+    100% { opacity: 0;   transform: translate(calc(var(--dx, 40px) * 2), calc(var(--dy, -60px) * 2)) rotate(0deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .egg-layer { display: none; }
+  }
+</style>
+
+<script>
+(function () {
+  const layer = document.getElementById('eggLayer');
+  if (!layer || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // Sprite pixel: tiap karakter = grid teks, huruf = warna
+  const P = { o:'#ffa41b', p:'#c084fc', c:'#22d3ee', r:'#fb7185', w:'#ffffff', k:'#0a1a4a', g:'#4ade80' };
+  const SPRITES = [
+    [ // hantu
+      '..oooo..',
+      '.oooooo.',
+      'owwoowwo',
+      'owkoowko',
+      'oooooooo',
+      'oooooooo',
+      'oo.oo.oo' ],
+    [ // alien
+      '..p..p..',
+      '...pp...',
+      '..pppp..',
+      '.pp pp p.'.replace(/ /g,''),
+      'pppppppp',
+      'p.pppp.p',
+      'p.p..p.p' ],
+    [ // hati
+      '.rr..rr.',
+      'rrrrrrrr',
+      'rrrrrrrr',
+      '.rrrrrr.',
+      '..rrrr..',
+      '...rr...' ],
+    [ // bintang
+      '...cc...',
+      '...cc...',
+      'cccccccc',
+      '.cccccc.',
+      '..cccc..',
+      '.cc..cc.' ],
+    [ // slime
+      '........',
+      '..gggg..',
+      '.gggggg.',
+      'gwkggwkg',
+      'gggggggg',
+      'gggggggg' ]
+  ];
+
+  function toSVG(rows) {
+    const h = rows.length, w = rows[0].length;
+    let rects = '';
+    rows.forEach((row, y) => [...row].forEach((ch, x) => {
+      if (P[ch]) rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="${P[ch]}"/>`;
+    }));
+    return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">${rects}</svg>`;
+  }
+
+  const rand = (a, b) => Math.random() * (b - a) + a;
+
+  function spawn() {
+    if (layer.children.length >= 6) return;           // batasi jumlah
+    const el = document.createElement('div');
+    el.className = 'egg';
+    const size = Math.round(rand(2, 4)) * 12;          // 24 / 36 / 48 px
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.left = rand(2, 95) + 'vw';
+    el.style.top = rand(8, 90) + 'vh';
+    el.style.setProperty('--dx', rand(-120, 120) + 'px');
+    el.style.setProperty('--dy', rand(-120, 60) + 'px');
+    el.style.setProperty('--rot', rand(-12, 12) + 'deg');
+    el.style.setProperty('--dur', rand(8, 14) + 's');
+    el.innerHTML = toSVG(SPRITES[Math.floor(Math.random() * SPRITES.length)]);
+    el.addEventListener('animationend', () => el.remove());
+    layer.appendChild(el);
+  }
+
+  // muncul tiap 2-4 detik
+  (function loop() { spawn(); setTimeout(loop, rand(2000, 4000)); })();
+
+  // parallax saat scroll: background ikut bergerak
+  let ticking = false;
+  addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      layer.style.transform = `translateY(${-scrollY * 0.25}px)`;
+      ticking = false;
+    });
+  }, { passive: true });
+})();
+</script>
 
 </body>
 </html>

@@ -37,6 +37,12 @@
 /* Dadu */
 .hx-dice-out{min-height:3.2em;font-weight:700;font-size:1.1rem;line-height:1.4;margin:0 0 16px}
 .hx-mini .hx-btn{margin:0;cursor:pointer;font:inherit;font-weight:800}
+
+/* Konfeti dadu */
+.hx-dice{position:relative;isolation:isolate}
+.hx-dice>.hx-panel{position:relative;z-index:1;height:100%}
+.hx-confetti{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hx-conf{position:absolute;left:50%;top:50%;will-change:transform,opacity}
 </style>
 
 <div class="hx hx-mini">
@@ -59,11 +65,14 @@
                 <p class="hx-sub">Semester {{ $semester }} dari {{ $totalSemester }}.</p>
             </div>
 
-            <div class="hx-panel">
-                <h3>Dadu Hari Ini</h3>
-                <p class="hx-dice-out" id="hx-dice-out" aria-live="polite">Lempar dadu untuk tahu kegiatan hari ini.</p>
-                <button type="button" class="hx-btn" id="hx-dice-btn">Lempar dadu</button>
-            </div>
+            <div class="hx-dice">
+    <div class="hx-confetti" id="hx-confetti"></div>
+    <div class="hx-panel">
+        <h3>Dadu Hari Ini</h3>
+        <p class="hx-dice-out" id="hx-dice-out" aria-live="polite">Lempar dadu untuk tahu kegiatan hari ini.</p>
+        <button type="button" class="hx-btn" id="hx-dice-btn">Lempar dadu</button>
+    </div>
+</div>
 
         </div>
     </section>
@@ -90,17 +99,54 @@
     }
     tick(); setInterval(tick, 1000);
 
-    // Dadu
+        // Dadu
     var picks = @json($dice);
     var out = document.getElementById('hx-dice-out'), btn = document.getElementById('hx-dice-btn');
+    var layer = document.getElementById('hx-confetti');
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     function rand() { return picks[Math.floor(Math.random() * picks.length)]; }
+
+    // Konfeti pixel yang meledak dari belakang box
+    function burst() {
+        if (!layer || !layer.animate) return;
+        var accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#f9a825';
+        var colors = [accent, '#22d3ee', '#ffffff', '#ff8a00'];
+        for (var i = 0; i < 40; i++) {
+            (function (i) {
+                var p = document.createElement('span');
+                var size = 6 + Math.floor(Math.random() * 3) * 2;
+                p.className = 'hx-conf';
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.background = colors[i % colors.length];
+                layer.appendChild(p);
+
+                var angle = Math.random() * Math.PI * 2;
+                var dist = 150 + Math.random() * 130;
+                var dx = Math.cos(angle) * dist;
+                var dy = Math.sin(angle) * dist - 30;
+                var base = 'translate(-50%,-50%) ';
+                var anim = p.animate([
+                    { transform: base + 'translate(0px,0px) rotate(0deg)', opacity: 1 },
+                    { transform: base + 'translate(' + dx + 'px,' + dy + 'px) rotate(' + (Math.random() * 360) + 'deg)', opacity: 1, offset: 0.7 },
+                    { transform: base + 'translate(' + dx + 'px,' + (dy + 60) + 'px) rotate(' + (Math.random() * 540) + 'deg)', opacity: 0 }
+                ], { duration: 900 + Math.random() * 500, easing: 'cubic-bezier(.2,.7,.3,1)' });
+                anim.onfinish = function () { p.remove(); };
+            })(i);
+        }
+    }
+
     btn.addEventListener('click', function () {
         btn.disabled = true;
         var n = reduce ? 0 : 8;
         (function roll() {
             if (n-- > 0) { out.textContent = rand(); setTimeout(roll, 70); }
-            else { out.textContent = 'Hari ini: ' + rand(); btn.disabled = false; btn.textContent = 'Lempar lagi'; }
+            else {
+                out.textContent = 'Hari ini: ' + rand();
+                btn.disabled = false;
+                btn.textContent = 'Lempar lagi';
+                burst();
+            }
         })();
     });
 })();

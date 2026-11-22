@@ -97,3 +97,8 @@
 </script>
 
 @endsection
+
+@section('after_content')
+    @include('partials.hobbies-extras')
+
+@endsection

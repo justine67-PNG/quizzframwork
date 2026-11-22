@@ -244,4 +244,6 @@
 
 </section>
 
+@include('partials.about-extras')
+
 @endsection

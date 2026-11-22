@@ -897,3 +897,14 @@ a.hw-col:focus-visible {
         height: 260px;
     }
 }
+
+.gb-btn{display:inline-flex;align-items:center;gap:12px;margin-bottom:28px;padding:12px 20px;
+    color:#061a4d !important;font-size:.8rem !important;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    background:var(--accent,#f9a825);border:2px solid var(--accent,#f9a825);
+    box-shadow:5px 5px 0 var(--accent2,#ff8a00);text-decoration:none;
+    transition:transform .15s,box-shadow .15s,background .15s}
+.gb-btn:hover,.gb-btn:focus-visible{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--accent2,#ff8a00);
+    background:#fff;border-color:#fff;outline:none}
+.gb-btn:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--accent2,#ff8a00)}
+.gb-arrow{display:inline-block;font-size:.8rem;animation:gbNudge 1s steps(2) infinite}
+@keyframes gbNudge{50%{transform:translateX(-4px)}}
