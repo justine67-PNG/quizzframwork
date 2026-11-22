@@ -499,3 +499,401 @@ body {
 /* bahasa yang sedang aktif */
 .lang-item.is-current,
 .lang-item.is-current small { color: #ffb020; }
+
+/* ===== PARALLAX: tiap lapisan background punya kecepatan sendiri ===== */
+
+body {
+    background-position:
+        0 0,                                   /* lapisan gelap di bawah: diam */
+        0 calc(var(--bg-far,  0px) * -1),      /* pola piksel 64px: lambat */
+        0 calc(var(--bg-near, 0px) * -1);      /* pola piksel 136px: lebih cepat */
+}
+
+/* ===== HOBBIES: JENDELA + KOLOM VERTIKAL ===== */
+
+.hw-window {
+    max-width: 1000px;
+    margin: 40px auto 0;
+    overflow: hidden;
+    background: #04081a;
+    border: 2px solid var(--border, #1f4a9e);
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.hw-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 46px;
+    padding: 0 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border, #1f4a9e);
+}
+
+.hw-url {
+    color: var(--muted, #8fb0d8);
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 14px;
+}
+
+.hw-dots { display: flex; gap: 8px; }
+
+.hw-dots i {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.hw-dots i:last-child { background: var(--accent-2, #ff6a1a); }
+
+.hw-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
+    height: 470px;
+}
+
+.hw-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+    min-width: 0;
+    padding: 28px;
+}
+
+.hw-preview {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #14307a, #04081a);
+    border: 1px solid var(--border, #1f4a9e);
+    border-radius: 10px;
+}
+
+.hw-preview-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.hw-preview-img.is-active { opacity: 1; }
+
+.hw-infos { display: grid; }
+
+.hw-info {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.hw-info.is-active {
+    opacity: 1;
+    transform: none;
+}
+
+.hw-info small {
+    color: var(--cyan, #3de0ff);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+.hw-info h2 {
+    margin: 8px 0 10px;
+    color: white;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.hw-info p {
+    color: #cfe0f5;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.hw-cols {
+    display: flex;
+    min-width: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hw-col {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    background: linear-gradient(160deg, #14307a, #04081a);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.hw-col:last-child { border-right: none; }
+
+.hw-col img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.hw-col::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.3) 45%,
+        rgba(0, 0, 0, 0.75) 100%);
+    pointer-events: none;
+}
+
+.hw-col::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    width: 3px;
+    background: white;
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hw-col:hover::before { opacity: 1; }
+
+/* foto diam; zoom hanya saat kursor di atasnya */
+.hw-col:hover img { transform: scale(1.1); }
+
+.hw-label {
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    transform: translateX(-50%);
+}
+
+.hw-label small,
+.hw-label .hw-title { writing-mode: vertical-rl; }
+
+.hw-label small {
+    margin-top: 4px;
+    color: #ffd9c2;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.hw-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(34px, 4.6vw, 58px);
+    font-weight: 700;
+    line-height: 1;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+    transition: color 0.3s ease;
+}
+
+.hw-num {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    z-index: 2;
+    transform: translateX(-50%);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 34px;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.hw-col:hover .hw-title,
+.hw-col:hover .hw-num { color: var(--accent-2, #ff6a1a); }
+
+@media (max-width: 800px) {
+    .hw-body {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+
+    .hw-cols { height: 380px; border-left: none; border-top: 1px solid rgba(255, 255, 255, 0.15); }
+    .hw-preview { height: 200px; }
+}
+
+/* ===== HOBBIES: LEBAR PENUH, SEJAJAR DENGAN HALAMAN ===== */
+
+.hw-window {
+    width: 100%;
+    max-width: none;
+    margin: 40px 0 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.hw-body {
+    height: clamp(540px, 68vh, 720px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+}
+
+/* kiri: rata dengan judul My Hobbies */
+.hw-left { padding: 0 48px 0 0; }
+.hw-preview { height: clamp(240px, 36vh, 340px); }
+.hw-info h2 { font-size: clamp(38px, 3.4vw, 54px); }
+.hw-info p { max-width: 460px; font-size: 15px; }
+
+/* kanan: kolom vertikal */
+.hw-cols {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hw-title { font-size: clamp(40px, 5vw, 80px); }
+.hw-num   { bottom: 20px; font-size: 40px; }
+
+@media (max-width: 800px) {
+    .hw-body {
+        height: auto;
+        grid-template-columns: 1fr;
+    }
+
+    .hw-left { padding: 0 0 24px; }
+    .hw-preview { height: 200px; }
+    .hw-cols { height: 420px; }
+}
+
+/* ===== HOBBIES: 3 KOLOM BESAR DI SISI KANAN ===== */
+
+/* main jadi acuan posisi (hanya di halaman hobi) */
+main:has(.hw-window) {
+    position: relative;
+    min-height: calc(100vh - 82px);   /* minimal setinggi satu layar */
+}
+
+.hw-cols {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(50% - 50vw);   /* mentok sampai tepi kanan layar */
+    width: 56vw;
+    z-index: 1;
+    border-top: none;
+    border-bottom: none;
+}
+
+/* judul dan nomor ikut membesar */
+.hw-title { font-size: clamp(48px, 6vw, 96px); }
+.hw-label { top: 40px; }
+.hw-num   { bottom: 32px; font-size: 48px; }
+
+@media (max-width: 800px) {
+    .hw-cols {
+        position: static;
+        width: auto;
+        height: 420px;
+    }
+}
+
+/* ===== HOBBIES: BAGIAN KIRI LEBIH KE TENGAH ===== */
+
+main:has(.hw-window) {
+    /* seberapa jauh bagian kiri digeser ke kiri
+       (otomatis mengecil di layar yang lebih sempit) */
+    --hw-shift: clamp(0px, calc(max(55px, 50vw - 645px) - 30px), 110px);
+}
+
+/* judul + deskripsi ikut bergeser supaya tetap sejajar dengan preview */
+main:has(.hw-window) > .page-title,
+main:has(.hw-window) > .page-description {
+    margin-left: calc(-1 * var(--hw-shift));
+}
+
+.hw-window { margin-left: calc(-1 * var(--hw-shift)); }
+
+/* jarak antara bagian kiri dan kolom kanan */
+.hw-left { padding-right: clamp(48px, 4vw, 80px); }
+
+@media (max-width: 800px) {
+    main:has(.hw-window) { --hw-shift: 0px; }
+    .hw-left { padding-right: 0; }
+}
+
+/* ===== HOBBIES: KOLOM BISA DIKLIK ===== */
+
+a.hw-col {
+    display: block;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a.hw-col:focus-visible {
+    outline: 3px solid var(--cyan, #3de0ff);
+    outline-offset: -3px;
+}
+
+/* ===== HOBBIES: KOLOM BENTUK JAJAR GENJANG ===== */
+
+.hw-cols {
+    width: 57.5vw;
+    right: calc(50% - 50vw - 1.5vw);   /* geser sedikit keluar layar supaya ujung miring tetap mentok ke tepi */
+    border-left: none;
+}
+
+.hw-col {
+    border-right: none;
+    clip-path: polygon(7% 0, 100% 0, 93% 100%, 0 100%);
+}
+
+/* garis putih saat hover: mengikuti sisi kiri yang miring */
+.hw-col::before {
+    right: 0;
+    width: auto;
+    box-shadow: none;
+    clip-path: polygon(7% 0, calc(7% + 4px) 0, 4px 100%, 0 100%);
+}
+
+@media (max-width: 800px) {
+    .hw-cols { width: auto; }
+}
+
+/* ===== HOBBIES: KOLOM TANPA CELAH ===== */
+
+.hw-col + .hw-col { margin-left: -1.45vw; }
+
+@media (max-width: 800px) {
+    .hw-col + .hw-col { margin-left: -2.3vw; }
+}
+
+/* ===== HOBBIES: GAMBAR PREVIEW MEMANJANG KE BAWAH ===== */
+
+.hw-left { gap: 40px; }            /* jarak gambar ke teks */
+
+.hw-preview {
+    flex: 1 1 0;                   /* ambil seluruh sisa ruang */
+    height: auto;
+    min-height: 240px;
+}
+
+@media (max-width: 800px) {
+    .hw-preview {
+        flex: none;
+        height: 260px;
+    }
+}

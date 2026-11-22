@@ -10,6 +10,8 @@
 
         <h1>HELLO, WELCOME!</h1>
 
+        <p><span id="typed-role"></span></p>
+
         <p>
             Welcome to my personal website.
         Here you can get to know me better,
@@ -23,4 +25,10 @@
 
     </div>
 
+@include('partials.home-sections')
+@include('partials.home-mini')
+@include('partials.home-counters')
+
 @endsection
+
+

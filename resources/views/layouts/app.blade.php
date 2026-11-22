@@ -1441,22 +1441,65 @@ footer p {
     @include('partials.footer')
 
 
-    <audio id="bgm" src="{{ asset('audio/music.mp3') }}" loop preload="auto"></audio>
+    {{-- <audio id="bgm" preload="auto"></audio>
 
     <button id="bgm-toggle" type="button" aria-label="Putar atau jeda musik">♪</button>
 
         <script>
     (function () {
         const audio = document.getElementById('bgm');
-        const btn = document.getElementById('bgm-toggle');
-        audio.volume = 0.4;
+const btn = document.getElementById('bgm-toggle');
+audio.volume = 0.4;
 
-        const savedTime = parseFloat(sessionStorage.getItem('bgmTime') || '0');
-        let userPaused = sessionStorage.getItem('bgmPaused') === '1';
+// ===== DAFTAR LAGU: sesuaikan dengan file di public/audio =====
+const TRACKS = [
+    "{{ asset('audio/music.mp3') }}",
+    "{{ asset('audio/music2.mp3') }}",
+    "{{ asset('audio/music3.mp3') }}",
+];
 
-        audio.addEventListener('loadedmetadata', function () {
-            if (savedTime && savedTime < audio.duration) audio.currentTime = savedTime;
-        });
+let userPaused = sessionStorage.getItem('bgmPaused') === '1';
+let resumeTime = parseFloat(sessionStorage.getItem('bgmTime') || '0');
+let errorCount = 0;
+
+// pilih lagu acak yang berbeda dari lagu sebelumnya
+function randomIndex(except) {
+    if (TRACKS.length < 2) return 0;
+    let i;
+    do { i = Math.floor(Math.random() * TRACKS.length); } while (i === except);
+    return i;
+}
+
+// lanjutkan lagu terakhir kalau ada, kalau tidak pilih acak
+let current = parseInt(sessionStorage.getItem('bgmTrack'), 10);
+if (isNaN(current) || current < 0 || current >= TRACKS.length) {
+    current = randomIndex(-1);
+    resumeTime = 0;
+}
+sessionStorage.setItem('bgmTrack', current);
+audio.src = TRACKS[current];
+
+audio.addEventListener('loadedmetadata', function () {
+    if (resumeTime && resumeTime < audio.duration) audio.currentTime = resumeTime;
+    resumeTime = 0;
+});
+
+// lagu selesai -> mulai lagu acak lain
+function playRandom() {
+    current = randomIndex(current);
+    sessionStorage.setItem('bgmTrack', current);
+    sessionStorage.setItem('bgmTime', 0);
+    audio.src = TRACKS[current];
+    audio.play().then(updateButton).catch(function () {});
+}
+
+audio.addEventListener('ended', playRandom);
+audio.addEventListener('playing', function () { errorCount = 0; });
+
+// kalau satu file gagal dimuat (nama salah), lompat ke lagu lain
+audio.addEventListener('error', function () {
+    if (++errorCount < TRACKS.length) playRandom();
+});
 
         function updateButton() {
             btn.classList.toggle('is-playing', !audio.paused);
@@ -1546,9 +1589,233 @@ footer p {
             loadPage(location.href, false);   // tombol back/forward
         });
     })();
+    </script> --}}
+
+        <style>
+    /* ===== POP UP MUSIK ===== */
+    .bgm-pop{position:fixed;right:20px;bottom:84px;z-index:9992;width:280px;padding:16px 18px;display:none;color:#fff;
+        background:linear-gradient(160deg,#030c2b,#061a4d);border:2px solid #1e4fb8;box-shadow:5px 5px 0 rgba(30,79,184,.55)}
+    .bgm-pop.open{display:block}
+    .bgm-pop small{color:#22d3ee;font-weight:700}
+    .bgm-title{margin:4px 0 14px;font-weight:800;font-size:1.05rem;line-height:1.3;overflow-wrap:anywhere}
+    .bgm-bar{height:10px;background:#0a2466;border:2px solid #1e4fb8}
+    .bgm-bar i{display:block;height:100%;width:0;background:var(--accent,#f9a825)}
+    .bgm-time{display:flex;justify-content:space-between;margin:8px 0 14px;font-size:.85rem;color:#b9c8f0;
+        font-family:ui-monospace,Consolas,monospace}
+    .bgm-play{cursor:pointer;font:inherit;font-weight:800;padding:8px 20px;color:#061a4d;
+        background:var(--accent,#f9a825);border:2px solid var(--accent,#f9a825);box-shadow:4px 4px 0 var(--accent2,#ff8a00);
+        transition:transform .15s,box-shadow .15s}
+    .bgm-play:hover,.bgm-play:focus-visible{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--accent2,#ff8a00);outline:none}
+    @media (max-width:400px){.bgm-pop{width:calc(100vw - 40px)}}
+    </style>
+
+    <audio id="bgm" preload="auto"></audio>
+
+    <div class="bgm-pop" id="bgm-pop" role="dialog" aria-label="Pemutar musik">
+        <small>Sedang diputar</small>
+        <div class="bgm-title" id="bgm-title">-</div>
+        <div class="bgm-bar"><i id="bgm-fill"></i></div>
+        <div class="bgm-time"><span id="bgm-cur">0:00</span><span id="bgm-dur">--:--</span></div>
+        <button type="button" class="bgm-play" id="bgm-play">Play</button>
+    </div>
+
+    <button id="bgm-toggle" type="button" aria-label="Buka pemutar musik" aria-expanded="false" aria-controls="bgm-pop">♪</button>
+
+    <script>
+    (function () {
+        const audio = document.getElementById('bgm');
+        const btn = document.getElementById('bgm-toggle');
+        const pop = document.getElementById('bgm-pop');
+        const titleEl = document.getElementById('bgm-title');
+        const fill = document.getElementById('bgm-fill');
+        const curEl = document.getElementById('bgm-cur');
+        const durEl = document.getElementById('bgm-dur');
+        const playBtn = document.getElementById('bgm-play');
+        audio.volume = 0.4;
+
+        // ===== DAFTAR LAGU: sesuaikan file dan judulnya =====
+        const TRACKS = [
+            { src: "{{ asset('audio/music.mp3') }}",  title: 'Steve Lacy - oh yeah ' },
+            { src: "{{ asset('audio/music2.mp3') }}", title: 'Rex Orange County - Hannah Montana' },
+            { src: "{{ asset('audio/music3.mp3') }}", title: 'A Sorrowful Reunion - Reality Club' },
+        ];
+
+        let userPaused = sessionStorage.getItem('bgmPaused') === '1';
+        let resumeTime = parseFloat(sessionStorage.getItem('bgmTime') || '0');
+        let errorCount = 0;
+
+        function fmt(s) {
+            if (!isFinite(s)) return '--:--';
+            s = Math.floor(s);
+            return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2);
+        }
+
+        // pilih lagu acak yang berbeda dari lagu sebelumnya
+        function randomIndex(except) {
+            if (TRACKS.length < 2) return 0;
+            let i;
+            do { i = Math.floor(Math.random() * TRACKS.length); } while (i === except);
+            return i;
+        }
+
+        // lanjutkan lagu terakhir kalau ada, kalau tidak pilih acak
+        let current = parseInt(sessionStorage.getItem('bgmTrack'), 10);
+        if (isNaN(current) || current < 0 || current >= TRACKS.length) {
+            current = randomIndex(-1);
+            resumeTime = 0;
+        }
+        sessionStorage.setItem('bgmTrack', current);
+        audio.src = TRACKS[current].src;
+        titleEl.textContent = TRACKS[current].title;
+
+        audio.addEventListener('loadedmetadata', function () {
+            if (resumeTime && resumeTime < audio.duration) audio.currentTime = resumeTime;
+            resumeTime = 0;
+        });
+
+        // durasi dan progress di pop up
+        audio.addEventListener('loadedmetadata', function () { durEl.textContent = fmt(audio.duration); });
+        audio.addEventListener('timeupdate', function () {
+            curEl.textContent = fmt(audio.currentTime);
+            fill.style.width = (audio.duration ? audio.currentTime / audio.duration * 100 : 0) + '%';
+        });
+
+        // lagu selesai -> mulai lagu acak lain
+        function playRandom() {
+            current = randomIndex(current);
+            sessionStorage.setItem('bgmTrack', current);
+            sessionStorage.setItem('bgmTime', 0);
+            audio.src = TRACKS[current].src;
+            titleEl.textContent = TRACKS[current].title;
+            curEl.textContent = '0:00';
+            durEl.textContent = '--:--';
+            fill.style.width = '0%';
+            audio.play().then(updateButton).catch(function () {});
+        }
+
+        audio.addEventListener('ended', playRandom);
+        audio.addEventListener('playing', function () { errorCount = 0; });
+
+        // kalau satu file gagal dimuat (nama salah), lompat ke lagu lain
+        audio.addEventListener('error', function () {
+            if (++errorCount < TRACKS.length) playRandom();
+        });
+
+        function updateButton() {
+            btn.classList.toggle('is-playing', !audio.paused);
+            playBtn.textContent = audio.paused ? 'Play' : 'Stop';
+        }
+        audio.addEventListener('play', updateButton);
+        audio.addEventListener('pause', updateButton);
+
+        function tryPlay() {
+            return audio.play().then(updateButton).catch(function () {
+                const events = ['click', 'keydown', 'touchend'];
+                function unlock() {
+                    if (!userPaused) audio.play().then(updateButton).catch(function () {});
+                    events.forEach(function (e) { document.removeEventListener(e, unlock); });
+                }
+                events.forEach(function (e) { document.addEventListener(e, unlock); });
+            });
+        }
+
+        if (!userPaused) tryPlay();
+        updateButton();
+
+        // ===== POP UP: tombol ♪ membuka / menutup =====
+        function setOpen(open) {
+            pop.classList.toggle('open', open);
+            btn.setAttribute('aria-expanded', open);
+        }
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            setOpen(!pop.classList.contains('open'));
+        });
+        document.addEventListener('click', function (e) {
+            if (!pop.contains(e.target) && e.target !== btn) setOpen(false);
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') setOpen(false);
+        });
+
+        // tombol Play / Stop di dalam pop up
+        playBtn.addEventListener('click', function () {
+            if (audio.paused) {
+                userPaused = false;
+                sessionStorage.setItem('bgmPaused', '0');
+                audio.play().then(updateButton).catch(function () {});
+            } else {
+                userPaused = true;
+                sessionStorage.setItem('bgmPaused', '1');
+                audio.pause();
+                updateButton();
+            }
+        });
+
+        setInterval(function () {
+            if (!audio.paused) sessionStorage.setItem('bgmTime', audio.currentTime);
+        }, 1000);
+        window.addEventListener('beforeunload', function () {
+            sessionStorage.setItem('bgmTime', audio.currentTime);
+        });
+
+        /* ===== PINDAH HALAMAN TANPA PUTUS MUSIK ===== */
+
+        async function loadPage(url, push) {
+            try {
+                const res = await fetch(url, { headers: { 'X-Requested-With': 'fetch' } });
+                if (!res.ok) throw new Error('bad response');
+                const html = await res.text();
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+
+                const newMain = doc.querySelector('main');
+                const oldMain = document.querySelector('main');
+                if (!newMain || !oldMain) throw new Error('no main');
+
+                if (window.__stopGames) { window.__stopGames(); window.__stopGames = null; }
+
+                oldMain.innerHTML = newMain.innerHTML;
+                document.title = doc.title;
+
+                // jalankan ulang script milik halaman (slider, auto-scroll, dll.)
+                oldMain.querySelectorAll('script').forEach(function (old) {
+                    const s = document.createElement('script');
+                    s.textContent = old.textContent;
+                    old.replaceWith(s);
+                });
+
+                if (push) history.pushState({}, '', url);
+                window.scrollTo(0, 0);
+            } catch (err) {
+                window.location.href = url;   // cadangan: reload biasa
+            }
+        }
+
+        document.addEventListener('click', function (e) {
+            const a = e.target.closest('a');
+            if (!a) return;
+            if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+            if (a.target === '_blank' || a.hasAttribute('download')) return;
+            if (a.origin !== location.origin) return;                 // link luar
+            if (a.protocol === 'mailto:' || a.protocol === 'tel:') return;
+            const href = a.getAttribute('href');
+            if (!href || href.startsWith('#')) return;                // anchor di halaman sama
+
+            e.preventDefault();
+            loadPage(a.href, true);
+        });
+
+        window.addEventListener('popstate', function () {
+            loadPage(location.href, false);   // tombol back/forward
+        });
+    })();
     </script>
 
+
     <script src="{{ asset('js/search.js') }}"></script>
+
+    @include('partials.pixel-trail')
+    @include('partials.theme-fx')
 
 </body>
 </html>

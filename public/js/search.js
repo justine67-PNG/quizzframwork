@@ -136,5 +136,34 @@
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') close();
     });
+
+    /* ===== PARALLAX BACKGROUND ===== */
+(function () {
+    // kecepatan tiap lapisan: 1 = sama dengan konten, 0 = diam
+    const SPEED_NEAR = 0.45;   // lapisan depan (lebih cepat)
+    const SPEED_FAR  = 0.2;    // lapisan belakang (lebih lambat)
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const root = document.documentElement;
+    let ticking = false;
+
+    function update() {
+        const y = window.scrollY;
+        root.style.setProperty('--bg-near', Math.round(y * SPEED_NEAR) + 'px');
+        root.style.setProperty('--bg-far',  Math.round(y * SPEED_FAR)  + 'px');
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+        if (!ticking) {
+            requestAnimationFrame(update);
+            ticking = true;
+        }
+    }, { passive: true });
+
+    update();
+})();
+
 })();
 })();
