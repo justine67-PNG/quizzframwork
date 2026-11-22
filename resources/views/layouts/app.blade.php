@@ -1979,5 +1979,139 @@ audio.addEventListener('error', function () {
 })();
 </script>
 
+<style>
+  /* ===== Ikon vinyl pixel ===== */
+  .vinyl-btn svg { width: 100%; height: 100%; display: block; shape-rendering: crispEdges; image-rendering: pixelated; }
+  .vinyl-btn .vinyl-spin { width: 100%; height: 100%; }
+  .vinyl-btn.playing .vinyl-spin { animation: vinylSpin 1.6s steps(8) infinite; }
+  @keyframes vinylSpin { to { transform: rotate(360deg); } }
+
+  /* ===== Lirik di dalam popup ===== */
+  .lyrics-box {
+    position: relative;
+    margin-top: 16px;
+    padding: 12px;
+    max-height: 150px;
+    overflow-y: auto;
+    background: rgba(5, 12, 45, .8);
+    border: 2px solid #1e4fd8;
+    font-size: 12px;
+    line-height: 1.8;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    scroll-behavior: smooth;
+  }
+  .lyrics-box::-webkit-scrollbar { width: 6px; }
+  .lyrics-box::-webkit-scrollbar-thumb { background: #ffa41b; }
+  .lyric-line { color: rgba(255,255,255,.35); transition: color .25s, transform .25s; }
+  .lyric-line.active { color: #22d3ee; transform: translateX(4px); }
+  .lyric-line.active::before { content: "▶ "; color: #ffa41b; }
+</style>
+
+<script>
+(function () {
+  const btn   = document.getElementById('bgm-toggle');
+  const popup = document.getElementById('bgm-pop');
+  const audio = document.getElementById('bgm');
+  if (!btn || !audio) return;
+
+  /* ---------- 1. Ikon vinyl pixel ---------- */
+  const N = 14, C = (N - 1) / 2;
+  let rects = '';
+  for (let y = 0; y < N; y++) {
+    for (let x = 0; x < N; x++) {
+      const d = Math.hypot(x - C, y - C);
+      if (d > 7) continue;
+      let fill = '#0a0a14';
+      if ((d > 4.3 && d < 5) || (d > 5.7 && d < 6.3)) fill = '#2b2f4a';
+      if (d <= 3) fill = '#ffa41b';
+      if (d <= 1.2) fill = '#0a1a4a';
+      if (x < C && y < C && d > 5 && d < 6.6 && (x + y) % 3 === 0) fill = '#6b7bb8';
+      rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="${fill}"/>`;
+    }
+  }
+  btn.classList.add('vinyl-btn');
+  btn.innerHTML = `<div class="vinyl-spin"><svg viewBox="0 0 ${N} ${N}" xmlns="http://www.w3.org/2000/svg">${rects}</svg></div>`;
+
+  const syncSpin = () => btn.classList.toggle('playing', !audio.paused);
+  ['play', 'pause', 'playing', 'ended'].forEach(e => audio.addEventListener(e, syncSpin));
+  syncSpin();
+
+  /* ---------- 2. Lirik otomatis dari LRCLIB ---------- */
+  if (!popup) return;
+  const box = document.createElement('div');
+  box.className = 'lyrics-box';
+  box.style.display = 'none';
+  popup.appendChild(box);
+
+  const titleEl = document.getElementById('bgm-title');
+  const cache = {};
+  let lines = [], current = -1, shownTitle = null;
+
+  function parseLRC(lrc) {
+    const out = [];
+    lrc.split('\n').forEach(row => {
+      const m = row.match(/^\[(\d+):(\d+(?:\.\d+)?)\]\s*(.*)$/);
+      if (m && m[3].trim()) out.push({ t: +m[1] * 60 + parseFloat(m[2]), text: m[3].trim() });
+    });
+    return out;
+  }
+
+  async function getLyrics(title) {
+    if (title in cache) return cache[title];
+    try {
+      const res = await fetch('https://lrclib.net/api/search?q=' + encodeURIComponent(title));
+      const data = await res.json();
+      const hit = data.find(d => d.syncedLyrics);
+      cache[title] = hit ? parseLRC(hit.syncedLyrics) : [];
+    } catch (e) {
+      cache[title] = [];
+    }
+    return cache[title];
+  }
+
+  async function renderLyrics() {
+    const title = titleEl.textContent.trim();
+    if (!title || title === '-' || title === shownTitle) return;
+    shownTitle = title;
+    current = -1;
+    lines = [];
+    box.innerHTML = '';
+    box.style.display = 'none';
+
+    const result = await getLyrics(title);
+    if (title !== shownTitle) return;
+    lines = result;
+    if (!lines.length) return;
+
+    box.style.display = '';
+    lines.forEach(l => {
+      const p = document.createElement('div');
+      p.className = 'lyric-line';
+      p.textContent = l.text;
+      box.appendChild(p);
+    });
+  }
+
+  audio.addEventListener('timeupdate', () => {
+    renderLyrics();
+    if (!lines.length) return;
+    let idx = -1;
+    for (let i = 0; i < lines.length; i++) if (audio.currentTime >= lines[i].t) idx = i;
+    if (idx === current) return;
+    current = idx;
+    [...box.children].forEach((el, i) => el.classList.toggle('active', i === idx));
+    if (idx >= 0) {
+    const el = box.children[idx];
+    const boxRect = box.getBoundingClientRect();
+    const elRect  = el.getBoundingClientRect();
+    const offset  = elRect.top - boxRect.top + box.scrollTop;
+    box.scrollTop = offset - box.clientHeight / 2 + el.clientHeight / 2;
+    }
+  });
+  renderLyrics();
+})();
+</script>
+
 </body>
 </html>
